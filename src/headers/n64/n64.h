@@ -11,6 +11,8 @@
 namespace nintendo64
 {
 
+    extern bool quiet_skip;
+
 struct N64
 {
     Cpu cpu;

@@ -3,9 +3,41 @@
 namespace nintendo64
 {
 
+    std::string get_memory_range_name(u32 addr) {
+        if (addr < 0x00800000) return "RDRAM";
+        if (addr < 0x03F00000) return "UNUSED";
+        if (addr < 0x04000000) return "RDRAM Registers";
+        if (addr < 0x04001000) return "Signal Processor DMEM";
+        if (addr < 0x04002000) return "Signal Processor IMEM";
+        if (addr < 0x04040000) return "UNUSED";
+        if (addr < 0x05000000) {
+            switch ((addr >> 20) & 0xF) {
+                case 0: return "Signal Processor Register";
+                case 1: case 2: return "Display Processor Register";
+                case 3: return "MIPS Interface Register";
+                case 4: return "Video Interface Register";
+                case 5: return "Audio Interface Register";
+                case 6: return "Peripheral Interface Register";
+                case 7: return "RDRAM Interface Register";
+                case 8: return "Serial Interface Register";
+            }
+        }
+        if (addr < 0x08000000) return "N64 Disk Drive Register";
+        if (addr < 0x10000000) return "Static RAM";
+        if (addr < 0x1FC00000) return "Cartridge ROM";
+        if (addr < 0x1FC007C0) return "PIF ROM";
+        if (addr < 0x1FC00800) return "PIF RAM";
+        if (addr >= 0x1FD00000 && addr <= 0x7FFFFFFF) return "Cartridge Domain3";
+        else return "UNUSED";
+
+    }
+
 template<typename access_type>
 access_type read_physical(N64 &n64, u32 addr)
 {
+    if (!nintendo64::quiet_skip)
+        spdlog::trace("MR 0x{:x} at {} memory", addr, get_memory_range_name(addr));
+
     // just do something naive for now so we can get roms running
     if(addr < 0x00800000)
     {
@@ -46,9 +78,9 @@ access_type read_physical(N64 &n64, u32 addr)
         
         switch(idx)
         {
-            case 0: return read_sp_regs(n64,addr); 
-            case 1: unimplemented("read_mem: dp command regs"); return 0;
-            case 2: unimplemented("read_mem: dp span regs"); return 0;
+            case 0: return read_sp_regs(n64,addr);
+            case 1:
+            case 2: return read_dp_regs(n64, addr);
             case 3: return read_mi(n64,addr); 
             case 4: return read_vi(n64,addr); 
             case 5: return read_ai(n64,addr);
@@ -112,6 +144,9 @@ access_type read_physical(N64 &n64, u32 addr)
 template<typename access_type>
 void write_physical(N64 &n64, u32 addr, access_type v)
 {
+    if (!nintendo64::quiet_skip)
+        spdlog::trace("MW 0x{:x}->0x{:x} at {} memory", v, addr, get_memory_range_name(addr));
+
     // just do something naive for now so we can get roms running
     if(addr < 0x0080'0000)
     {
@@ -151,8 +186,8 @@ void write_physical(N64 &n64, u32 addr, access_type v)
         switch(idx)
         {
             case 0: write_sp_regs(n64,addr,v); break;
-            case 1: unimplemented("write_mem: dp command regs"); break;
-            case 2: unimplemented("write_mem: dp span regs"); break;
+            case 1:
+            case 2: write_dp_regs(n64,addr,v); break;
             case 3: write_mi(n64,addr,v); break;
             case 4: write_vi(n64,addr,v); break;
             case 5: write_ai(n64,addr,v); break;
@@ -203,7 +238,7 @@ void write_physical(N64 &n64, u32 addr, access_type v)
 
     else
     {
-        printf("warning unused write at %08x\n",addr);
+        spdlog::warn("Unused write at %08x\n",addr);
     }   
 }
 

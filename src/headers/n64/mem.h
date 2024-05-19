@@ -1,6 +1,7 @@
 #pragma once
 #include <n64/mem/mem_constants.h>
 #include <n64/mem/sp_regs.h>
+#include <n64/mem/dp_regs.h>
 #include <n64/mem/rdram_interface.h>
 #include <n64/mem/peripheral_interface.h>
 #include <n64/mem/video_interface.h>
@@ -31,6 +32,7 @@ struct Mem
     RdramInterface ri;
 
     SpRegs sp_regs;
+    DpRegs dp_regs;
 
     PeripheralInterface pi;
     MipsInterface mi;

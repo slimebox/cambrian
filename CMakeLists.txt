@@ -1,6 +1,6 @@
 #project config
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.21)
 
 project(albion)
 include(FetchContent)
@@ -152,20 +152,6 @@ if(WIN32)
 
 	endif()
 
-
-
-	# Fetch SDL for the runtime
-	FetchContent_Declare(
-			SDL2
-			URL https://www.libsdl.org/release/SDL2-devel-2.30.2-VC.zip
-	)
-	FetchContent_MakeAvailable(SDL2)
-	set(SDL2_DIR ${sdl2_SOURCE_DIR})
-	list(APPEND CMAKE_PREFIX_PATH "${sdl2_SOURCE_DIR}/cmake")
-
-	find_package(SDL2 CONFIG REQUIRED)
-
-	target_link_libraries(albion PUBLIC SDL2::SDL2)
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Werror -Wall -Wextra -march=native -pthread -O1 -fomit-frame-pointer -Wno-missing-braces")
 
@@ -215,7 +201,6 @@ if(DEFINED GB)
 
 	add_library(gb STATIC ${gb_files})
 
-
 	target_link_libraries(albion PUBLIC gb)
 endif()
 
@@ -236,3 +221,27 @@ if(${FRONTEND} STREQUAL "IMGUI")
 endif()
 
 target_link_libraries(albion PUBLIC spdlog)
+
+add_subdirectory(beyond-all-repair)
+
+if(WIN32)
+	# Fetch SDL for the runtime
+	FetchContent_Declare(
+			SDL2
+			URL https://www.libsdl.org/release/SDL2-devel-2.30.2-VC.zip
+	)
+	FetchContent_MakeAvailable(SDL2)
+	set(SDL2_DIR ${sdl2_SOURCE_DIR})
+	list(APPEND CMAKE_PREFIX_PATH "${sdl2_SOURCE_DIR}/cmake")
+
+	find_package(SDL2 REQUIRED)
+
+	target_link_libraries(albion PUBLIC SDL2::SDL2)
+
+	add_custom_command(
+			TARGET ${PROJECT_NAME} POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy_if_different
+			$<TARGET_FILE:SDL2::SDL2>
+			$<TARGET_FILE_DIR:${PROJECT_NAME}>
+			VERBATIM)
+endif()

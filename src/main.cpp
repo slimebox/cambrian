@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 #endif
 
     spdlog::set_pattern("[%H:%M:%S.%e] [%l] %v");
+    spdlog::set_level(spdlog::level::trace);
     std::fesetround(FE_TONEAREST);
 
 // if sdl is used for anything we need to init it here

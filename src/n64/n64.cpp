@@ -17,6 +17,8 @@ using namespace beyond_all_repair;
 #include <n64/debug.cpp>
 #include <n64/scheduler.cpp>
 
+bool nintendo64::quiet_skip = false;
+
 namespace nintendo64
 {
 

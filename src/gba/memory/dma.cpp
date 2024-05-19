@@ -349,8 +349,8 @@ void Dma::do_dma(int reg_num, dma_type req_type)
         case dma_type::fifo_b:
         case dma_type::fifo_a:
         {
+            spdlog::trace("Beginning FIFO DMA {} from 0x{:x} to 0x{:x}", reg_num, r.src_shadow, r.dst_shadow);
             //printf("fifo dma %x from %08x to %08x\n",reg_num,r.src_shadow,r.dst_shadow);
-
 
             // need to rework our memory model to handle
             // the n & s cycles implictly at some point
@@ -375,12 +375,14 @@ void Dma::do_dma(int reg_num, dma_type req_type)
 
                 // dst is not incremented when doing fifo dma
             }
+            spdlog::trace("DMA operation {} finished.", reg_num);
             break;
         }
 
 
         default:
         {
+            spdlog::trace("Beginning DMA {} from 0x{:x} to 0x{:x}.", reg_num, r.src_shadow, r.dst_shadow);
             write_log(debug,"dma {:x} from {:08x} to {:08x}\n",reg_num,r.src_shadow,r.dst_shadow);
             //std::cout << fmt::format("dma {:x} from {:08x} to {:08x}, {:08x} bytes\n",reg_num,r.src_shadow,r.dst_shadow,r.word_count_shadow);
             // TODO how does internal cycles work for this?
@@ -412,8 +414,10 @@ void Dma::do_dma(int reg_num, dma_type req_type)
                     }
                 }
             }
+            spdlog::trace("DMA operation {} finished.", reg_num);
             break;
         }
+
     }
 
     // do irq on finish

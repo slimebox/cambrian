@@ -360,6 +360,7 @@ void write_u64(N64 &n64,u32 addr,u64 v)
 #include <n64/mem/mips_interface.cpp>
 #include <n64/mem/rdram.cpp>
 #include <n64/mem/sp_regs.cpp>
+#include <n64/mem/dp_regs.cpp>
 #include <n64/mem/video_interface.cpp>
 #include <n64/mem/peripheral_interface.cpp>
 #include <n64/mem/pif.cpp>

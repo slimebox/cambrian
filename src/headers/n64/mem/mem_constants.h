@@ -74,8 +74,33 @@ static constexpr u32 DP_INTR_BIT = 5;
 
 
 // sp
-static constexpr u32 SP_PC = 0x04080000;
-static constexpr u32 SP_STATUS = 0x04040010;
+static constexpr u32 SP_DMEM =      0x04000000;
+static constexpr u32 SP_IMEM =      0x04001000;
+static constexpr u32 SP_MEM_ADDR =  0x04040000;
+static constexpr u32 SP_DRAM_ADDR = 0x04040004;
+static constexpr u32 SP_RD_LEN =    0x04040008;
+static constexpr u32 SP_WR_LEN =    0x0404000C;
+static constexpr u32 SP_STATUS =    0x04040010;
+static constexpr u32 SP_DMA_FULL =  0x04040014;
+static constexpr u32 SP_DMA_BUSY =  0x0404001B;
+static constexpr u32 SP_SEMAPHORE = 0x0404001C;
+static constexpr u32 SP_PC =        0x04080000;
+static constexpr u32 SP_IBIST =     0x04080008;
+
+// dp
+static constexpr u32 DP_START =     0x04100000;
+static constexpr u32 DP_END =       0x04100004;
+static constexpr u32 DP_CURRENT =   0x04100008;
+static constexpr u32 DP_STATUS =    0x0410000C;
+static constexpr u32 DP_CLOCK =     0x04100010;
+static constexpr u32 DP_BUFBUSY =   0x04100014;
+static constexpr u32 DP_PIPEBUSY =  0x04100018;
+static constexpr u32 DP_TMEM =      0x0410001C;
+
+static constexpr u32 DP_SPAN_TBIST = 0x04200000;
+static constexpr u32 DP_SPAN_TEST_MODE = 0x04200004;
+static constexpr u32 DP_SPAN_TEST_ADDR = 0x04200008;
+static constexpr u32 DP_SPAN_TEST_DATA = 0x0420000C;
 
 static constexpr u32 PIF_SIZE = 0x40;
 static constexpr u32 PIF_MASK = PIF_SIZE - 1;

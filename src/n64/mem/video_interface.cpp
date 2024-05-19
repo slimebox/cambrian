@@ -16,7 +16,7 @@ void write_vi(N64& n64, u64 addr ,u32 v)
             vi.serrate = is_set(v,6);
             vi.aa = (v >> 8) & 0b11;
 
-            spdlog::trace("Video Interface Control: %d bpp, %s%s%s%s, %d anti-aliasing", vi.bpp, vi.gamma_dither ? "Gamma Dither Enable, " : "", vi.gamma ? "Gamma Enable, " : "", vi.divot ? "Divot Enable, " : "", vi.serrate ? "Serrate, " : "", vi.aa);
+            spdlog::trace("Video Interface Control: {} bpp, {}{}{}{}, {} anti-aliasing", vi.bpp, vi.gamma_dither ? "Gamma Dither Enable, " : "", vi.gamma ? "Gamma Enable, " : "", vi.divot ? "Divot Enable, " : "", vi.serrate ? "Serrate, " : "", vi.aa);
 
             if(vi.gamma_dither)
             {
@@ -45,21 +45,21 @@ void write_vi(N64& n64, u64 addr ,u32 v)
         case VI_ORIGIN:
         {
             vi.origin = v & 0x00ff'ffff;
-            spdlog::trace("Video Interface Origin: %d", vi.origin);
+            spdlog::trace("Video Interface Origin: {}", vi.origin);
             break;
         }
 
         case VI_WIDTH:
         {
             vi.width = v & 0xfff;
-            spdlog::trace("Video Interface Width: %d", vi.width);
+            spdlog::trace("Video Interface Width: {}", vi.width);
             break;
         }
 
         case VI_INTR:
         {
             vi.intr = v & 0x3ff;
-            spdlog::trace("Video Interface Interrupt: %d", vi.intr);
+            spdlog::trace("Video Interface Interrupt: {}", vi.intr);
             break;
         }
 
@@ -70,21 +70,21 @@ void write_vi(N64& n64, u64 addr ,u32 v)
             vi.burst_width = (v >> 8) & 0xff;
             vi.hsync_width = (v >> 0) & 0xff;
 
-            spdlog::trace("Video Interface Burst: Start %d, VSync Width %d, Burst Width %d, HSync Width %d", vi.burst_start, vi.vsync_width, vi.burst_width, vi.hsync_width);
+            spdlog::trace("Video Interface Burst: Start {}, VSync Width {}, Burst Width {}, HSync Width {}", vi.burst_start, vi.vsync_width, vi.burst_width, vi.hsync_width);
             break;
         }
 
         case VI_V_SYNC:
         {
             vi.vsync = v & 0x3ff;
-            spdlog::trace("Video Interface VSync: %d", vi.vsync);
+            spdlog::trace("Video Interface VSync: {}", vi.vsync);
             break;
         }
 
         case VI_H_SYNC:
         {
             vi.hsync = v & 0x3ff;
-            spdlog::trace("Video Interface HSync: %d / %d", vi.hsync, vi.hsync / 4);
+            spdlog::trace("Video Interface HSync: {} / {}", vi.hsync, vi.hsync / 4);
             break;
         }     
 
@@ -100,7 +100,7 @@ void write_vi(N64& n64, u64 addr ,u32 v)
         {
             vi.leap_a = (v >> 16) & 0xfff;
             vi.leap_b = v & 0xfff;
-            spdlog::trace("Video Interface Leap: a %d, b %d", vi.leap_a, vi.leap_b);
+            spdlog::trace("Video Interface Leap: a {}, b {}", vi.leap_a, vi.leap_b);
             break;
         }
 
@@ -109,7 +109,7 @@ void write_vi(N64& n64, u64 addr ,u32 v)
         {
             vi.h_start = (v >> 16) & 0x3ff;
             vi.h_end = v & 0x3ff;
-            spdlog::trace("Video Interface Horizontal Size: start %d, end %d", vi.h_start, vi.h_end);
+            spdlog::trace("Video Interface Horizontal Size: start {}, end {}", vi.h_start, vi.h_end);
 
             change_res(n64);
             break;
@@ -120,7 +120,7 @@ void write_vi(N64& n64, u64 addr ,u32 v)
         {
             vi.v_start = (v >> 16) & 0x3ff;
             vi.v_end = v & 0x3ff;
-            spdlog::trace("Video Interface Vertical Size: start %d, end %d", vi.v_start, vi.v_end);
+            spdlog::trace("Video Interface Vertical Size: start {}, end {}", vi.v_start, vi.v_end);
 
             change_res(n64);
             break;                
@@ -130,7 +130,7 @@ void write_vi(N64& n64, u64 addr ,u32 v)
         {
             vi.vburst_start = (v >> 16) & 0x3ff;
             vi.vburst_end = v & 0x3ff;
-            spdlog::trace("Video Interface Vertical Burst: start %d, end %d", vi.vburst_start, vi.vburst_end);
+            spdlog::trace("Video Interface Vertical Burst: start {}, end {}", vi.vburst_start, vi.vburst_end);
             break;
         }
 
@@ -139,7 +139,7 @@ void write_vi(N64& n64, u64 addr ,u32 v)
             vi.x_offset = (v >> 16) & 0xfff;
             vi.x_scale = v & 0xfff;
 
-            spdlog::trace("Video Interface Horizontal Scale: offset %d, scale %d", vi.x_offset, vi.x_scale);
+            spdlog::trace("Video Interface Horizontal Scale: offset {}, scale {}", vi.x_offset, vi.x_scale);
 
             change_res(n64);
             break;
@@ -150,7 +150,7 @@ void write_vi(N64& n64, u64 addr ,u32 v)
             vi.y_offset = (v >> 16) & 0xfff;
             vi.y_scale = v & 0xfff;
 
-            spdlog::trace("Video Interface Vertical Size: offset %d, scale %d", vi.y_offset, vi.y_scale);
+            spdlog::trace("Video Interface Vertical Size: offset {}, scale {}", vi.y_offset, vi.y_scale);
             change_res(n64);
             break;
         }

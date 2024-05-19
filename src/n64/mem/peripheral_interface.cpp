@@ -13,6 +13,8 @@ void pi_dma_finished(N64& n64)
 // TODO: handle dma domains properly
 void do_pi_dma(N64 &n64, u32 src, u32 dst, u32 len)
 {
+    spdlog::trace("Beginning DMA from 0x{:x} to 0x{:x} ({} bytes)", src, dst, len);
+    nintendo64::quiet_skip = true;
     //printf("dma from %08x to %08x len %08x\n",src,dst,len);
 
     auto& pi = n64.mem.pi;
@@ -27,7 +29,8 @@ void do_pi_dma(N64 &n64, u32 src, u32 dst, u32 len)
         const u16 v = read_physical<u16>(n64,src + i);
         write_physical<u16>(n64,dst+i,v);
     }
-
+    nintendo64::quiet_skip = false;
+    spdlog::trace("DMA finished.");
 
     // TODO: what should the timings on this be?
     const auto event = n64.scheduler.create_event(20,n64_event::pi_dma);
