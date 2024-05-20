@@ -168,6 +168,12 @@ if(DEFINED N64)
 	include_directories("beyond-all-repair/src")
 	target_link_libraries(n64 spdlog)
 
+	add_custom_target(mips_lut COMMAND ${CMAKE_SOURCE_DIR}/tools/lutgen.exe ${CMAKE_SOURCE_DIR}/src/n64/instr/mips_lut.cpp)
+
+	set_source_files_properties(${CMAKE_SOURCE_DIR}/src/n64/instr/mips_lut.cpp PROPERTIES GENERATED TRUE)
+
+	add_dependencies(n64 mips_lut)
+
 	target_link_libraries(albion PUBLIC n64)
 endif()
 
